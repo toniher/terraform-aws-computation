@@ -1,19 +1,4 @@
-variable "profile" {
-  type    = string
-  default = "default"
-}
-
-variable "credentials" {
-  type = string
-}
-
-variable "region" {
-  type = string
-}
-
-variable "key_name" {
-  type = string
-}
+// Variables
 
 variable "ec2_count" {
   type    = number

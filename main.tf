@@ -24,21 +24,21 @@ resource "aws_instance" "ec2-entrypoint" {
   }
 
   // Let's wait all buckets to be created first. It could be even tried one by one
-  depends_on = [aws_s3_bucket.class-bucket, aws_iam_instance_profile.Multiprofile]
+  depends_on = [aws_s3_bucket.ec2-bucket, aws_iam_instance_profile.Multiprofile]
 
   tags = {
-    name = "classroom-${count.index + 1}"
+    name = "ec2-entrypoint-${count.index + 1}"
   }
 
 }
 
 resource "aws_s3_bucket" "ec2-bucket" {
   count         = var.ec2_count
-  bucket        = format("%s-%s", var.bucket_prefix, count.index + 1)
+  bucket        = format("%s-%s-%s", var.bucket_prefix, random_string.rand.result, count.index + 1)
   acl           = var.bucket_acl
   force_destroy = var.bucket_destroy
 
   tags = {
-    name = format("%s-%s", var.bucket_prefix, count.index + 1)
+    name = format("%s-%s-%s", var.bucket_prefix, random_string.rand.result, count.index + 1)
   }
 }

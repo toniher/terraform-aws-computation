@@ -23,8 +23,6 @@ if [ ! -z "${repo_url}" ]
 	sudo chown -R ec2-user:ec2-user /home/ec2-user/git	
 fi
 
-sudo chown -R ec2-user:ec2-user /home/ec2-user/git
-
 # Let's record .bash_history for activity tracking
 
 cat <<EOF >> /home/ec2-user/.bashrc

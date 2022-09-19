@@ -1,60 +1,60 @@
 variable "profile" {
-    type    = string
-    default = "default"
+  type    = string
+  default = "default"
 }
 
 variable "credentials" {
-    type = string
+  type = string
 }
 
 variable "region" {
-    type = string
+  type = string
 }
 
 variable "key_name" {
-    type = string
+  type = string
 }
 
 variable "ec2_count" {
-    type    = number
-    default = 2
+  type    = number
+  default = 2
 }
 
 variable "ec2_ami" {
-    type = string
+  type = string
 }
 
 variable "ec2_password" {
-    type = string
+  type = string
 }
 
 variable "ec2_instance_type" {
-    type    = string
-    default = "t2.micro"
+  type    = string
+  default = "t2.micro"
 }
 
 variable "ec2_volume_size" {
-    type    = number
-    default = 10
+  type    = number
+  default = 10
 }
 
 variable "bucket_destroy" {
-    type    = bool
-    default = true
+  type    = bool
+  default = true
 }
 
 variable "bucket_acl" {
-    type    = string
-    default = "private"
+  type    = string
+  default = "private"
 }
 
 variable "bucket_prefix" {
-    type    = string
-    default = "class-bucket"
+  type    = string
+  default = "class-bucket"
 }
 
 
 variable "repo_url" {
-    type    = string
-    default = ""
+  type    = string
+  default = ""
 }

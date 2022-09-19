@@ -12,7 +12,7 @@ resource "aws_instance" "ec2-entrypoint" {
     instance_type        = var.ec2_instance_type
     iam_instance_profile = aws_iam_instance_profile.Multiprofile.name
     key_name             = var.key_name
-    security_groups      = ["allow_ssh-${random_string.rand.result}", "allow_http-${random_string.rand.result}", "allow_shiny-${random_string.rand.result}"]
+    security_groups      = [aws_security_group.allow_ssh.name, aws_security_group.allow_http.name, aws_security_group.allow_shiny.name]
     user_data            = templatefile("ec2init.sh.tpl", { region = var.region, ec2_password = var.ec2_password, bucket_acl = var.bucket_acl, bucket_prefix = var.bucket_prefix, repo_url = var.repo_url, rand = random_string.rand.result, count = count.index + 1 })
     root_block_device {
         volume_size = var.ec2_volume_size

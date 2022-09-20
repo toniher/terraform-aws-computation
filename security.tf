@@ -145,7 +145,7 @@ resource "aws_iam_policy_attachment" "AmazonS3FullAccess-policy-attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.ClusterRole.name, aws_iam_role.Multiaccess.name, aws_iam_role.ComputeInstanceRole.name]
+  roles      = [aws_iam_role.Multiaccess.name]
 }
 
 resource "aws_iam_policy_attachment" "CloudWatchFullAccess-policy-attachment" {

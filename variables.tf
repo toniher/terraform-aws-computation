@@ -1,5 +1,15 @@
 // Variables
 
+variable "key_name" {
+  type    = string
+  default = "my-key"
+}
+
+variable "region" {
+  type    = string
+  default = "eu-central-1"
+}
+
 variable "ec2_count" {
   type    = number
   default = 2

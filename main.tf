@@ -43,6 +43,6 @@ resource "aws_s3_bucket" "ec2-bucket" {
 }
 
 resource "aws_s3_bucket_acl" "ec2-bucket-acl" {
-  bucket = aws_s3_bucket.ec2-bucket.*.id
+  bucket = aws_s3_bucket.ec2-bucket.id
   acl    = "private"
 }

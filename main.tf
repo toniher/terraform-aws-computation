@@ -43,6 +43,7 @@ resource "aws_s3_bucket" "ec2-bucket" {
 }
 
 resource "aws_s3_bucket_acl" "ec2-bucket-acl" {
+  count  = var.ec2_count
   bucket = aws_s3_bucket.ec2-bucket[count.index].id
   acl    = "private"
 }

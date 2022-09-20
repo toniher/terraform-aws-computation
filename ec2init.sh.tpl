@@ -18,6 +18,7 @@ sudo systemctl restart sshd
 
 # Course should be adapted here
 if [ ! -z "${repo_url}" ]
+then
 	mkdir -p /home/ec2-user/git
 	cd /home/ec2-user/git; git clone ${repo_url}
 	sudo chown -R ec2-user:ec2-user /home/ec2-user/git	

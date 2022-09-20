@@ -35,10 +35,14 @@ resource "aws_instance" "ec2-entrypoint" {
 resource "aws_s3_bucket" "ec2-bucket" {
   count         = var.ec2_count
   bucket        = format("%s-%s-%s", var.bucket_prefix, random_string.rand.result, count.index + 1)
-  acl           = var.bucket_acl
   force_destroy = var.bucket_destroy
 
   tags = {
     name = format("%s-%s-%s", var.bucket_prefix, random_string.rand.result, count.index + 1)
   }
+}
+
+resource "aws_s3_bucket_acl" "ec2-bucket-acl" {
+  bucket = aws_s3_bucket.ec2-bucket.*.id
+  acl    = "private"
 }

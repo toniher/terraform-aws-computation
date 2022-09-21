@@ -27,7 +27,7 @@ resource "aws_batch_compute_environment" "compute" {
 
   }
 
-  service_role = aws_iam_role.ClusterRole.arn
+  service_role = aws_iam_role.Multiaccess.arn
   type         = "MANAGED"
   depends_on   = [aws_iam_policy_attachment.AWSBatchServiceRole-policy-attachment]
 

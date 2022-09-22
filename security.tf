@@ -121,6 +121,31 @@ resource "aws_iam_role" "ComputeInstanceRole" {
 
 }
 
+// Role for the cluster
+resource "aws_iam_role" "ClusterRole" {
+  name = "ClusterRole-${random_string.rand.result}"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "batch.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      },
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+
+}
+
 // Additional role for fleeting cluster nodes - SPOT
 resource "aws_iam_role" "ClusterFleetRole" {
   name = "ClusterFleetRole-${random_string.rand.result}"
@@ -165,7 +190,7 @@ resource "aws_iam_policy_attachment" "AWSBatchServiceRole-policy-attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name, aws_iam_role.Multiaccess.name]
 }
 
 resource "aws_iam_policy_attachment" "CloudWatchLogsFullAccess-policy-attachment" {
@@ -173,7 +198,7 @@ resource "aws_iam_policy_attachment" "CloudWatchLogsFullAccess-policy-attachment
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name, aws_iam_role.Multiaccess.name]
 }
 
 resource "aws_iam_policy_attachment" "AmazonEC2FullAccess-policy-attachment" {
@@ -197,7 +222,7 @@ resource "aws_iam_policy_attachment" "AmazonS3FullAccess-policy-attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name, aws_iam_role.ComputeInstanceRole.name]
+  roles      = [aws_iam_role.ClusterRole.name, aws_iam_role.Multiaccess.name, aws_iam_role.ComputeInstanceRole.name]
 }
 
 resource "aws_iam_policy_attachment" "CloudWatchFullAccess-policy-attachment" {
@@ -238,7 +263,7 @@ resource "aws_iam_policy_attachment" "AmazonEC2ContainerServiceRole-policy-attac
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name]
 
 }
 
@@ -248,7 +273,7 @@ resource "aws_iam_policy_attachment" "AmazonEC2ContainerRegistryFullAccess-polic
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name]
 
 }
 
@@ -258,7 +283,7 @@ resource "aws_iam_policy_attachment" "AmazonECS_FullAccess-policy-attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name]
 
 }
 
@@ -268,7 +293,7 @@ resource "aws_iam_policy_attachment" "AWSTransferLoggingAccess-policy-attachment
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSTransferLoggingAccess"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name]
 
 }
 
@@ -278,7 +303,7 @@ resource "aws_iam_policy_attachment" "AmazonEC2ContainerServiceAutoscaleRole-pol
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name]
+  roles      = [aws_iam_role.ClusterRole.name]
 
 
 }
@@ -289,7 +314,7 @@ resource "aws_iam_policy_attachment" "AmazonEC2ContainerServiceforEC2Role-policy
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
   groups     = []
   users      = []
-  roles      = [aws_iam_role.Multiaccess.name, aws_iam_role.ComputeInstanceRole.name]
+  roles      = [aws_iam_role.ClusterRole.name, aws_iam_role.Multiaccess.name, aws_iam_role.ComputeInstanceRole.name]
 
 }
 

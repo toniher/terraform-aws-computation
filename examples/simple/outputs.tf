@@ -11,7 +11,7 @@ output "bucket_name" {
 }
 
 output "queue" {
-    value = module.aws-computation.queue
+  value = module.aws-computation.queue
 }
 
 

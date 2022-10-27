@@ -52,48 +52,82 @@ variable "repo_url" {
 
 
 // Batch variables
-
 variable "batch_subnets" {
   type = list(string)
 
 }
 
-variable "batch_ami" {
+// Batch variables - SPOT
+variable "batch_ami_spot" {
   type = string
 }
 
-variable "batch_bid_percentage" {
+variable "batch_bid_percentage_spot" {
   type    = number
   default = 50
 }
 
-variable "batch_max_vcpus" {
+variable "batch_max_vcpus_spot" {
   type = number
 }
 
-variable "batch_min_vcpus" {
+variable "batch_min_vcpus_spot" {
   type = number
 }
 
-variable "batch_desired_vcpus" {
+variable "batch_desired_vcpus_spot" {
   type = number
 }
 
-variable "batch_instance_type" {
+variable "batch_instance_type_spot" {
   type = list(string)
 }
 
-variable "batch_compute_environment_name" {
+variable "batch_compute_environment_name_spot" {
   type = string
 }
 
-variable "batch_compute_environment_type" {
+variable "batch_compute_environment_type_spot" {
   type = string
 }
 
-variable "batch_queue_name" {
+
+// Batch variables - SPOT GPU
+
+variable "batch_ami_spot_gpu" {
   type = string
 }
+
+variable "batch_bid_percentage_spot_gpu" {
+  type    = number
+  default = 50
+}
+
+variable "batch_max_vcpus_spot_gpu" {
+  type = number
+}
+
+variable "batch_min_vcpus_spot_gpu" {
+  type = number
+}
+
+variable "batch_desired_vcpus_spot_gpu" {
+  type = number
+}
+
+variable "batch_instance_type_spot_gpu" {
+  type = list(string)
+}
+
+variable "batch_compute_environment_name_spot_gpu" {
+  type = string
+}
+
+variable "batch_compute_environment_type_spot_gpu" {
+  type = string
+}
+
+
 
 
 provider "aws" {
@@ -121,21 +155,48 @@ module "aws-computation" {
 
   compute_environments = {
 
-    default = {
+    spot = {
 
-      batch_subnets                  = var.batch_subnets
-      batch_ami                      = var.batch_ami
-      batch_compute_environment_type = var.batch_compute_environment_type
-      batch_bid_percentage           = var.batch_bid_percentage
-      batch_max_vcpus                = var.batch_max_vcpus
-      batch_min_vcpus                = var.batch_min_vcpus
-      batch_desired_vcpus            = var.batch_desired_vcpus
-      batch_instance_type            = var.batch_instance_type
-      batch_compute_environment_name = var.batch_compute_environment_name
-      batch_queue_name               = var.batch_queue_name
+      subnets                  = var.batch_subnets
+      image_id                 = var.batch_ami_spot
+      type                     = var.batch_compute_environment_type_spot
+      bid_percentage           = var.batch_bid_percentage_spot
+      max_vcpus                = var.batch_max_vcpus_spot
+      min_vcpus                = var.batch_min_vcpus_spot
+      desired_vcpus            = var.batch_desired_vcpus_spot
+      instance_type            = var.batch_instance_type_spot
+
+    }
+
+    spot-gpu = {
+
+      subnets                  = var.batch_subnets
+      image_id                 = var.batch_ami_spot_gpu
+      type                     = var.batch_compute_environment_type_spot_gpu
+      bid_percentage           = var.batch_bid_percentage_spot_gpu
+      max_vcpus                = var.batch_max_vcpus_spot_gpu
+      min_vcpus                = var.batch_min_vcpus_spot_gpu
+      desired_vcpus            = var.batch_desired_vcpus_spot_gpu
+      instance_type            = var.batch_instance_type_spot_gpu
 
     }
 
   }
+
+  job_queues = {
+
+    spot = {
+
+      priority = 1
+
+    }
+
+    spot-gpu = {
+      priority = 1
+    }
+
+
+  }
+
 
 }

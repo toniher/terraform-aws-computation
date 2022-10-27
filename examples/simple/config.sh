@@ -15,14 +15,24 @@ export TF_VAR_bucket_prefix=my-dummy-bucket
 export TF_VAR_repo_url=https://github.com/biocorecrg/MOP2
 
 export TF_VAR_batch_subnets='["subnet-xxx", "subnet-yyy", "subnet-zzz"]'
-export TF_VAR_batch_ami=ami-xxx
-export TF_VAR_batch_compute_environment_type=SPOT
-export TF_VAR_batch_bid_percentage=99
-export TF_VAR_batch_max_vcpus=16
-export TF_VAR_batch_min_vcpus=0
-export TF_VAR_batch_desired_vcpus=0
-export TF_VAR_batch_instance_type='["optimal"]'
-export TF_VAR_batch_compute_environment_name=nf-compute-spot
-export TF_VAR_batch_queue_name=spot
+
+export TF_VAR_batch_ami_spot=ami-xxx
+export TF_VAR_batch_compute_environment_type_spot=SPOT
+export TF_VAR_batch_bid_percentage_spot=99
+export TF_VAR_batch_max_vcpus_spot=16
+export TF_VAR_batch_min_vcpus_spot=0
+export TF_VAR_batch_desired_vcpus_spot=0
+export TF_VAR_batch_instance_type_spot='["optimal"]'
+export TF_VAR_batch_compute_environment_name_spot=spot
+
+export TF_VAR_batch_ami_spot_gpu=ami-xxx
+export TF_VAR_batch_compute_environment_type_spot_gpu=SPOT
+export TF_VAR_batch_bid_percentage_spot_gpu=99
+export TF_VAR_batch_max_vcpus_spot_gpu=16
+export TF_VAR_batch_min_vcpus_spot_gpu=0
+export TF_VAR_batch_desired_vcpus_spot_gpu=0
+export TF_VAR_batch_instance_type_spot_gpu='["optimal"]'
+export TF_VAR_batch_compute_environment_name_spot_gpu=spot-gpu
+
 
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity|jq .Account|tr -d \")

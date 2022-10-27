@@ -157,27 +157,27 @@ module "aws-computation" {
 
     spot = {
 
-      subnets                  = var.batch_subnets
-      image_id                 = var.batch_ami_spot
-      type                     = var.batch_compute_environment_type_spot
-      bid_percentage           = var.batch_bid_percentage_spot
-      max_vcpus                = var.batch_max_vcpus_spot
-      min_vcpus                = var.batch_min_vcpus_spot
-      desired_vcpus            = var.batch_desired_vcpus_spot
-      instance_type            = var.batch_instance_type_spot
+      subnets        = var.batch_subnets
+      image_id       = var.batch_ami_spot
+      type           = var.batch_compute_environment_type_spot
+      bid_percentage = var.batch_bid_percentage_spot
+      max_vcpus      = var.batch_max_vcpus_spot
+      min_vcpus      = var.batch_min_vcpus_spot
+      desired_vcpus  = var.batch_desired_vcpus_spot
+      instance_type  = var.batch_instance_type_spot
 
     }
 
     spot-gpu = {
 
-      subnets                  = var.batch_subnets
-      image_id                 = var.batch_ami_spot_gpu
-      type                     = var.batch_compute_environment_type_spot_gpu
-      bid_percentage           = var.batch_bid_percentage_spot_gpu
-      max_vcpus                = var.batch_max_vcpus_spot_gpu
-      min_vcpus                = var.batch_min_vcpus_spot_gpu
-      desired_vcpus            = var.batch_desired_vcpus_spot_gpu
-      instance_type            = var.batch_instance_type_spot_gpu
+      subnets        = var.batch_subnets
+      image_id       = var.batch_ami_spot_gpu
+      type           = var.batch_compute_environment_type_spot_gpu
+      bid_percentage = var.batch_bid_percentage_spot_gpu
+      max_vcpus      = var.batch_max_vcpus_spot_gpu
+      min_vcpus      = var.batch_min_vcpus_spot_gpu
+      desired_vcpus  = var.batch_desired_vcpus_spot_gpu
+      instance_type  = var.batch_instance_type_spot_gpu
 
     }
 

@@ -33,6 +33,11 @@ variable "ec2_volume_size" {
   default = 10
 }
 
+variable "ec2_volume_type" {
+  type    = string
+  default = "gp2"
+}
+
 variable "bucket_destroy" {
   type    = bool
   default = true

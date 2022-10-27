@@ -8,6 +8,7 @@ export TF_VAR_ec2_ami=ami-xxx
 export TF_VAR_ec2_password=my-dummy-passwd
 export TF_VAR_ec2_instance_type=t2.micro
 export TF_VAR_ec2_volume_size=10
+export TF_VAR_ec2_volume_type=gp3
 export TF_VAR_bucket_destroy=true
 export TF_VAR_bucket_acl=private
 export TF_VAR_bucket_prefix=my-dummy-bucket

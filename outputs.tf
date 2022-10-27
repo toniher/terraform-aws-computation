@@ -11,7 +11,7 @@ output "bucket_name" {
 }
 
 output "queue" {
-    value = aws_batch_job_queue.queue.name
+  value = aws_batch_job_queue.queue.name
 }
 
 

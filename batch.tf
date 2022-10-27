@@ -2,6 +2,8 @@
 
 resource "aws_batch_compute_environment" "compute" {
 
+
+
   compute_environment_name = format("%s-%s", var.batch_compute_environment_name, random_string.rand.result)
 
   compute_resources {

@@ -54,7 +54,7 @@ variable "repo_url" {
 // Batch variables
 
 variable "batch_subnets" {
-  type    = list(string)
+  type = list(string)
 
 }
 
@@ -68,31 +68,31 @@ variable "batch_bid_percentage" {
 }
 
 variable "batch_max_vcpus" {
-  type    = number
+  type = number
 }
 
 variable "batch_min_vcpus" {
-  type    = number
+  type = number
 }
 
 variable "batch_desired_vcpus" {
-  type    = number
+  type = number
 }
 
 variable "batch_instance_type" {
-  type    = list(string)
+  type = list(string)
 }
 
 variable "batch_compute_environment_name" {
-  type    = string
+  type = string
 }
 
 variable "batch_compute_environment_type" {
-  type    = string
+  type = string
 }
 
 variable "batch_queue_name" {
-  type    = string
+  type = string
 }
 
 
@@ -113,21 +113,29 @@ module "aws-computation" {
   ec2_password      = var.ec2_password
   ec2_instance_type = var.ec2_instance_type
   ec2_volume_size   = var.ec2_volume_size
+  ec2_volume_type   = var.ec2_volume_type
   bucket_destroy    = var.bucket_destroy
   bucket_acl        = var.bucket_acl
   bucket_prefix     = var.bucket_prefix
   repo_url          = var.repo_url
-  
-  batch_subnets = var.batch_subnets
-  batch_ami = var.batch_ami
-  batch_compute_environment_type = var.batch_compute_environment_type
-  batch_bid_percentage = var.batch_bid_percentage
-  batch_max_vcpus = var.batch_max_vcpus
-  batch_min_vcpus = var.batch_min_vcpus
-  batch_desired_vcpus = var.batch_desired_vcpus
-  batch_instance_type = var.batch_instance_type
-  batch_compute_environment_name = var.batch_compute_environment_name
-  batch_queue_name = var.batch_queue_name
 
-  
+  compute_environments = {
+
+    default = {
+
+      batch_subnets                  = var.batch_subnets
+      batch_ami                      = var.batch_ami
+      batch_compute_environment_type = var.batch_compute_environment_type
+      batch_bid_percentage           = var.batch_bid_percentage
+      batch_max_vcpus                = var.batch_max_vcpus
+      batch_min_vcpus                = var.batch_min_vcpus
+      batch_desired_vcpus            = var.batch_desired_vcpus
+      batch_instance_type            = var.batch_instance_type
+      batch_compute_environment_name = var.batch_compute_environment_name
+      batch_queue_name               = var.batch_queue_name
+
+    }
+
+  }
+
 }

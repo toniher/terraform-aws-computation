@@ -24,13 +24,5 @@ export TF_VAR_batch_min_vcpus_spot=0
 export TF_VAR_batch_desired_vcpus_spot=0
 export TF_VAR_batch_instance_type_spot='["optimal"]'
 
-export TF_VAR_batch_ami_spot_gpu=ami-xxx
-export TF_VAR_batch_compute_environment_type_spot_gpu=SPOT
-export TF_VAR_batch_bid_percentage_spot_gpu=99
-export TF_VAR_batch_max_vcpus_spot_gpu=16
-export TF_VAR_batch_min_vcpus_spot_gpu=0
-export TF_VAR_batch_desired_vcpus_spot_gpu=0
-export TF_VAR_batch_instance_type_spot_gpu='["optimal"]'
-
 
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity|jq .Account|tr -d \")

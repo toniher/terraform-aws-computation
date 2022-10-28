@@ -34,6 +34,10 @@ variable "ec2_volume_size" {
   type = number
 }
 
+variable "ec2_volume_type" {
+  type = string
+}
+
 variable "bucket_destroy" {
   type = bool
 }
@@ -92,42 +96,6 @@ variable "batch_compute_environment_type_spot" {
 }
 
 
-// Batch variables - SPOT GPU
-
-variable "batch_ami_spot_gpu" {
-  type = string
-}
-
-variable "batch_bid_percentage_spot_gpu" {
-  type    = number
-  default = 50
-}
-
-variable "batch_max_vcpus_spot_gpu" {
-  type = number
-}
-
-variable "batch_min_vcpus_spot_gpu" {
-  type = number
-}
-
-variable "batch_desired_vcpus_spot_gpu" {
-  type = number
-}
-
-variable "batch_instance_type_spot_gpu" {
-  type = list(string)
-}
-
-variable "batch_compute_environment_name_spot_gpu" {
-  type = string
-}
-
-variable "batch_compute_environment_type_spot_gpu" {
-  type = string
-}
-
-
 
 
 provider "aws" {
@@ -157,6 +125,7 @@ module "aws-computation" {
 
     spot = {
 
+      name           = "spot"
       subnets        = var.batch_subnets
       image_id       = var.batch_ami_spot
       type           = var.batch_compute_environment_type_spot
@@ -168,31 +137,15 @@ module "aws-computation" {
 
     }
 
-    spot-gpu = {
-
-      subnets        = var.batch_subnets
-      image_id       = var.batch_ami_spot_gpu
-      type           = var.batch_compute_environment_type_spot_gpu
-      bid_percentage = var.batch_bid_percentage_spot_gpu
-      max_vcpus      = var.batch_max_vcpus_spot_gpu
-      min_vcpus      = var.batch_min_vcpus_spot_gpu
-      desired_vcpus  = var.batch_desired_vcpus_spot_gpu
-      instance_type  = var.batch_instance_type_spot_gpu
-
-    }
 
   }
 
   job_queues = {
 
     spot = {
-
+      name = "spot"
       priority = 1
 
-    }
-
-    spot-gpu = {
-      priority = 1
     }
 
 

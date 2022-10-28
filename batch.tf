@@ -48,9 +48,9 @@ resource "aws_batch_job_queue" "queue" {
   name                 = each.value.name
   state                = "ENABLED"
   priority             = each.value.priority
-  compute_environments = [aws_batch_compute_environment.compute.arn]
+  compute_environments = [for env in aws_batch_compute_environment.compute : env.arn]
 
-  depends_on = [for env in aws_batch_compute_environment.compute : env.arn]
+  depends_on = [aws_batch_compute_environment.compute]
 
   tags = {
     name = "queue-${each.value.name}"

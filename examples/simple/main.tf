@@ -125,7 +125,6 @@ module "aws-computation" {
 
     spot = {
 
-      name           = "spot"
       subnets        = var.batch_subnets
       image_id       = var.batch_ami_spot
       type           = var.batch_compute_environment_type_spot
@@ -143,7 +142,6 @@ module "aws-computation" {
   job_queues = {
 
     spot = {
-      name = "spot"
       priority = 1
 
     }

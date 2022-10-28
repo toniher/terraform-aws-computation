@@ -4,7 +4,7 @@ resource "aws_batch_compute_environment" "compute" {
 
   for_each = { for k, v in var.compute_environments : k => v }
 
-  compute_environment_name = format("%s-%s", lookup(each.value, "name", null), random_string.rand.result)
+  compute_environment_name = format("%s-%s", each.key, random_string.rand.result)
 
   compute_resources {
 
@@ -35,7 +35,7 @@ resource "aws_batch_compute_environment" "compute" {
   depends_on   = [aws_iam_policy_attachment.AWSBatchServiceRole-policy-attachment]
 
   tags = {
-    name = format("compute-%s-%s", lookup(each.value, "name", null), random_string.rand.result)
+    name = format("compute-%s-%s", each.key, random_string.rand.result)
   }
 }
 
@@ -44,7 +44,7 @@ resource "aws_batch_job_queue" "queue" {
 
   for_each = { for k, v in var.job_queues : k => v }
 
-  name                 = lookup(each.value, "name", null)
+  name                 = each.key
   state                = "ENABLED"
   priority             = each.value.priority
   compute_environments = [for env in aws_batch_compute_environment.compute : env.arn]
@@ -52,6 +52,6 @@ resource "aws_batch_job_queue" "queue" {
   depends_on = [aws_batch_compute_environment.compute]
 
   tags = {
-    name = format("queue-%s-%s", lookup(each.value, "name", null), random_string.rand.result)
+    name = format("queue-%s-%s", each.key, random_string.rand.result)
   }
 }

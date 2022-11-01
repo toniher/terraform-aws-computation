@@ -10,10 +10,6 @@ output "bucket_name" {
   value = module.aws-computation.bucket_name
 }
 
-output "queue" {
-  value = module.aws-computation.queue
-}
-
 
 output "rand_string" {
   value = module.aws-computation.rand_string

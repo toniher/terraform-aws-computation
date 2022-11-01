@@ -34,6 +34,10 @@ variable "ec2_volume_size" {
   type = number
 }
 
+variable "ec2_volume_type" {
+  type = string
+}
+
 variable "bucket_destroy" {
   type = bool
 }
@@ -52,48 +56,46 @@ variable "repo_url" {
 
 
 // Batch variables
-
 variable "batch_subnets" {
-  type    = list(string)
+  type = list(string)
 
 }
 
-variable "batch_ami" {
+// Batch variables - SPOT
+variable "batch_ami_spot" {
   type = string
 }
 
-variable "batch_bid_percentage" {
+variable "batch_bid_percentage_spot" {
   type    = number
   default = 50
 }
 
-variable "batch_max_vcpus" {
-  type    = number
+variable "batch_max_vcpus_spot" {
+  type = number
 }
 
-variable "batch_min_vcpus" {
-  type    = number
+variable "batch_min_vcpus_spot" {
+  type = number
 }
 
-variable "batch_desired_vcpus" {
-  type    = number
+variable "batch_desired_vcpus_spot" {
+  type = number
 }
 
-variable "batch_instance_type" {
-  type    = list(string)
+variable "batch_instance_type_spot" {
+  type = list(string)
 }
 
-variable "batch_compute_environment_name" {
-  type    = string
+variable "batch_compute_environment_name_spot" {
+  type = string
 }
 
-variable "batch_compute_environment_type" {
-  type    = string
+variable "batch_compute_environment_type_spot" {
+  type = string
 }
 
-variable "batch_queue_name" {
-  type    = string
-}
+
 
 
 provider "aws" {
@@ -113,21 +115,39 @@ module "aws-computation" {
   ec2_password      = var.ec2_password
   ec2_instance_type = var.ec2_instance_type
   ec2_volume_size   = var.ec2_volume_size
+  ec2_volume_type   = var.ec2_volume_type
   bucket_destroy    = var.bucket_destroy
   bucket_acl        = var.bucket_acl
   bucket_prefix     = var.bucket_prefix
   repo_url          = var.repo_url
-  
-  batch_subnets = var.batch_subnets
-  batch_ami = var.batch_ami
-  batch_compute_environment_type = var.batch_compute_environment_type
-  batch_bid_percentage = var.batch_bid_percentage
-  batch_max_vcpus = var.batch_max_vcpus
-  batch_min_vcpus = var.batch_min_vcpus
-  batch_desired_vcpus = var.batch_desired_vcpus
-  batch_instance_type = var.batch_instance_type
-  batch_compute_environment_name = var.batch_compute_environment_name
-  batch_queue_name = var.batch_queue_name
 
-  
+  compute_environments = {
+
+    spot = {
+
+      subnets        = var.batch_subnets
+      image_id       = var.batch_ami_spot
+      type           = var.batch_compute_environment_type_spot
+      bid_percentage = var.batch_bid_percentage_spot
+      max_vcpus      = var.batch_max_vcpus_spot
+      min_vcpus      = var.batch_min_vcpus_spot
+      desired_vcpus  = var.batch_desired_vcpus_spot
+      instance_type  = var.batch_instance_type_spot
+
+    }
+
+
+  }
+
+  job_queues = {
+
+    spot = {
+      priority = 1
+
+    }
+
+
+  }
+
+
 }

@@ -16,6 +16,7 @@ resource "aws_instance" "ec2-entrypoint" {
   user_data            = templatefile("${path.module}/ec2init.sh.tpl", { region = var.region, ec2_password = var.ec2_password, bucket_acl = var.bucket_acl, bucket_prefix = var.bucket_prefix, repo_url = var.repo_url, rand = random_string.rand.result, count = count.index + 1 })
   root_block_device {
     volume_size = var.ec2_volume_size
+    volume_type = var.ec2_volume_type
   }
 
   // We add additional sleep time for allowing creation and proper set up of image

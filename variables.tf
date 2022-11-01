@@ -33,6 +33,11 @@ variable "ec2_volume_size" {
   default = 10
 }
 
+variable "ec2_volume_type" {
+  type    = string
+  default = "gp2"
+}
+
 variable "bucket_destroy" {
   type    = bool
   default = true
@@ -56,50 +61,21 @@ variable "repo_url" {
 
 // Batch variables
 
+
+// We assume the same subnets for the different clusters here
 variable "batch_subnets" {
   type    = list(string)
   default = ["subnet-8a280df7", "subnet-c54d6588", "subnet-b85ab5d2"]
 }
-variable "batch_ami" {
-  type = string
+
+variable "compute_environments" {
+  description = "Map of compute environment definitions to create"
+  type        = any
+  default     = {}
 }
 
-variable "batch_bid_percentage" {
-  type    = number
-  default = 50
-}
-
-variable "batch_max_vcpus" {
-  type    = number
-  default = 16
-}
-
-variable "batch_min_vcpus" {
-  type    = number
-  default = 0
-}
-
-variable "batch_desired_vcpus" {
-  type    = number
-  default = 0
-}
-
-variable "batch_instance_type" {
-  type    = list(string)
-  default = ["optimal"]
-}
-
-variable "batch_compute_environment_name" {
-  type    = string
-  default = "nf-compute-spot"
-}
-
-variable "batch_compute_environment_type" {
-  type    = string
-  default = "SPOT"
-}
-
-variable "batch_queue_name" {
-  type    = string
-  default = "spot"
+variable "job_queues" {
+  description = "Map of job queue and scheduling policy defintions to create"
+  type        = any
+  default     = {}
 }

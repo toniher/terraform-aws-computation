@@ -2,28 +2,31 @@
 
 resource "aws_batch_compute_environment" "compute" {
 
-  compute_environment_name = format("%s-%s", var.batch_compute_environment_name, random_string.rand.result)
+  for_each = { for k, v in var.compute_environments : k => v }
+
+  compute_environment_name = format("%s-%s", each.key, random_string.rand.result)
 
   compute_resources {
-    instance_role = aws_iam_instance_profile.ComputeInstanceProfile.arn
 
-    image_id = var.batch_ami
+      subnets = each.value.subnets
 
-    max_vcpus     = var.batch_max_vcpus
-    min_vcpus     = var.batch_min_vcpus
-    desired_vcpus = var.batch_desired_vcpus
+      instance_role = aws_iam_instance_profile.ComputeInstanceProfile.arn
 
-    instance_type = var.batch_instance_type
+      image_id = each.value.image_id
 
-    subnets = var.batch_subnets
+      max_vcpus     = each.value.max_vcpus
+      min_vcpus     = each.value.min_vcpus
+      desired_vcpus = each.value.desired_vcpus
 
-    type = var.batch_compute_environment_type
+      type = each.value.type
+      
+      instance_type = each.value.instance_type
 
-    spot_iam_fleet_role = (var.batch_compute_environment_type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)
+      spot_iam_fleet_role = (each.value.type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)
 
-    bid_percentage = (var.batch_compute_environment_type == "SPOT" ? var.batch_bid_percentage : null)
+      bid_percentage = (each.value.type == "SPOT" ? each.value.bid_percentage : null)
 
-    security_group_ids = [aws_security_group.allow_all.id]
+      security_group_ids = [aws_security_group.allow_all.id]
 
   }
 
@@ -32,21 +35,23 @@ resource "aws_batch_compute_environment" "compute" {
   depends_on   = [aws_iam_policy_attachment.AWSBatchServiceRole-policy-attachment]
 
   tags = {
-    name = format("compute-%s-%s", var.batch_compute_environment_name, random_string.rand.result)
+    name = format("compute-%s-%s", each.key, random_string.rand.result)
   }
 }
 
 
 resource "aws_batch_job_queue" "queue" {
 
-  name                 = var.batch_queue_name
+  for_each = { for k, v in var.job_queues : k => v }
+
+  name                 = each.key
   state                = "ENABLED"
-  priority             = 1
-  compute_environments = [aws_batch_compute_environment.compute.arn]
+  priority             = each.value.priority
+  compute_environments = [for env in aws_batch_compute_environment.compute : env.arn]
 
   depends_on = [aws_batch_compute_environment.compute]
 
   tags = {
-    name = "queue-${var.batch_queue_name}"
+    name = format("queue-%s-%s", each.key, random_string.rand.result)
   }
 }

@@ -55,6 +55,11 @@ module "aws-computation" {
 }
 ```
 
+## TODO
+
+* Change S3 permissions to only the ones defined
+* Allow read-only S3 input buckets blocks
+
 ## References
 
 * [AWS Batch Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/batch/) - Parts of this module are based on this and it provides further customization for the Batch instance

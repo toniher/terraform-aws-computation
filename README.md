@@ -63,6 +63,7 @@ module "aws-computation" {
 	* for_each for defining read-only policies. Buckets from var.bucket_input as a list
 	* Attach policy to the same role
 	* Put recipe in ec2init.tpl.sh for mounting them
+	* Consider specific permissions if private ones: https://aws.amazon.com/premiumsupport/knowledge-center/s3-instance-access-bucket/
 
 ## References
 

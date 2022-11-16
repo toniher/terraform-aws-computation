@@ -59,6 +59,7 @@ module "aws-computation" {
 
 * Change S3 permissions to only the ones defined
 * Allow read-only S3 input buckets blocks
+* Add launch template for Batch node
 
 ## References
 

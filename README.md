@@ -53,6 +53,12 @@ module "aws-computation" {
     }
   }
 
+  mount_points = {
+    default = {
+      directory = "/mnt/efs"
+    }
+  }
+
 }
 ```
 

@@ -8,25 +8,25 @@ resource "aws_batch_compute_environment" "compute" {
 
   compute_resources {
 
-      subnets = each.value.subnets
+    subnets = each.value.subnets
 
-      instance_role = aws_iam_instance_profile.ComputeInstanceProfile.arn
+    instance_role = aws_iam_instance_profile.ComputeInstanceProfile.arn
 
-      image_id = each.value.image_id
+    image_id = each.value.image_id
 
-      max_vcpus     = each.value.max_vcpus
-      min_vcpus     = each.value.min_vcpus
-      desired_vcpus = each.value.desired_vcpus
+    max_vcpus     = each.value.max_vcpus
+    min_vcpus     = each.value.min_vcpus
+    desired_vcpus = each.value.desired_vcpus
 
-      type = each.value.type
-      
-      instance_type = each.value.instance_type
+    type = each.value.type
 
-      spot_iam_fleet_role = (each.value.type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)
+    instance_type = each.value.instance_type
 
-      bid_percentage = (each.value.type == "SPOT" ? each.value.bid_percentage : null)
+    spot_iam_fleet_role = (each.value.type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)
 
-      security_group_ids = [aws_security_group.allow_all.id]
+    bid_percentage = (each.value.type == "SPOT" ? each.value.bid_percentage : null)
+
+    security_group_ids = [aws_security_group.allow_all.id]
 
   }
 
@@ -46,12 +46,12 @@ resource "aws_batch_job_queue" "queue" {
 
 
 
-  name                 = lookup(each.value, "name", null)
-  state                = "ENABLED"
-  priority             = each.value.priority
+  name     = lookup(each.value, "name", null)
+  state    = "ENABLED"
+  priority = each.value.priority
   compute_environments = [
-      for env in aws_batch_compute_environment.compute : 
-       env.arn if contains(each.value.compute, replace(env.compute_environment_name, format("-%s", random_string.rand.result), ""))
+    for env in aws_batch_compute_environment.compute :
+    env.arn if contains(each.value.compute, replace(env.compute_environment_name, format("-%s", random_string.rand.result), ""))
   ]
 
   depends_on = [aws_batch_compute_environment.compute]

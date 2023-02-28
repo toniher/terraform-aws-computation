@@ -79,3 +79,10 @@ variable "job_queues" {
   type        = any
   default     = {}
 }
+
+variable "mount_points" {
+  description = "Map of different mount points for EFS"
+  type        = any
+  default     = {}
+}
+

@@ -49,6 +49,7 @@ module "aws-computation" {
   job_queues = {
     spot = {
       priority = 1
+      compute = ["spot"]
     }
   }
 
@@ -64,6 +65,7 @@ module "aws-computation" {
 	* Attach policy to the same role
 	* Put recipe in ec2init.tpl.sh for mounting them
 	* Consider specific permissions if private ones: https://aws.amazon.com/premiumsupport/knowledge-center/s3-instance-access-bucket/
+* Add launch template for Batch node
 
 ## References
 

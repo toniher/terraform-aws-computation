@@ -143,7 +143,7 @@ module "aws-computation" {
 
     spot = {
       priority = 1
-
+      compute = ["spot"]
     }
 
 

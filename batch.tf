@@ -44,14 +44,19 @@ resource "aws_batch_job_queue" "queue" {
 
   for_each = { for k, v in var.job_queues : k => v }
 
-  name                 = each.key
+
+
+  name                 = lookup(each.value, "name", null)
   state                = "ENABLED"
   priority             = each.value.priority
-  compute_environments = [for env in aws_batch_compute_environment.compute : env.arn]
+  compute_environments = [
+      for env in aws_batch_compute_environment.compute : 
+       env.arn if contains(each.value.compute, replace(env.compute_environment_name, format("-%s", random_string.rand.result), ""))
+  ]
 
   depends_on = [aws_batch_compute_environment.compute]
 
   tags = {
-    name = format("queue-%s-%s", each.key, random_string.rand.result)
+    name = format("queue-%s-%s", lookup(each.value, "name", null), random_string.rand.result)
   }
 }

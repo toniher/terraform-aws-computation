@@ -59,7 +59,12 @@ module "aws-computation" {
 ## TODO
 
 * Change S3 permissions to only the ones defined
+	* for_each for permission (ideally only to the matching EC2)
 * Allow read-only S3 input buckets blocks
+	* for_each for defining read-only policies. Buckets from var.bucket_input as a list
+	* Attach policy to the same role
+	* Put recipe in ec2init.tpl.sh for mounting them
+	* Consider specific permissions if private ones: https://aws.amazon.com/premiumsupport/knowledge-center/s3-instance-access-bucket/
 * Add launch template for Batch node
 
 ## References

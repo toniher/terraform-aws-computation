@@ -12,7 +12,7 @@ resource "aws_batch_compute_environment" "compute" {
 
     instance_role = aws_iam_instance_profile.ComputeInstanceProfile.arn
 
-    image_id = each.value.image_id
+    image_id = lookup(each.value, "image_id", null)
 
     max_vcpus     = each.value.max_vcpus
     min_vcpus     = each.value.min_vcpus

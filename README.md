@@ -65,6 +65,7 @@ module "aws-computation" {
 ## TODO
 
 * Fuse Mounting of S3 not always working
+* error deleting Batch Compute Environment: Cannot delete, found existing JobQueue relationship.
 * Change S3 permissions to only the ones defined
 	* for_each for permission (ideally only to the matching EC2)
 * Allow read-only S3 input buckets blocks

@@ -105,6 +105,9 @@ provider "aws" {
 
 }
 
+provider "random" {}
+
+
 module "aws-computation" {
   // source = "git::https://github.com/toniher/terraform-aws-computation"
   source = "../.."
@@ -127,6 +130,7 @@ module "aws-computation" {
 
       subnets        = var.batch_subnets
       image_id       = var.batch_ami_spot
+      name           = var.batch_compute_environment_name_spot
       type           = var.batch_compute_environment_type_spot
       bid_percentage = var.batch_bid_percentage_spot
       max_vcpus      = var.batch_max_vcpus_spot

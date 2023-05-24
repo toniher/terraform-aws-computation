@@ -12,26 +12,34 @@ resource "aws_efs_file_system" "efs" {
 
 }
 
+// Get random subnet
+resource "random_shuffle" "random_subnet" {
+  input = tolist(var.batch_subnets)
+}
+
+// We assign only one subnet_id
 resource "aws_efs_mount_target" "efs_mount_target" {
-  count          = length(var.batch_subnets)
-  file_system_id = aws_efs_file_system.efs.id
-  subnet_id      = element(tolist(var.batch_subnets), count.index)
+  count          = length(tolist(keys(var.mount_points)))
+  file_system_id = aws_efs_file_system.efs[count.index].id
+  subnet_id      = element(random_shuffle.random_subnet.result, 0)
   security_groups = [
     aws_security_group.allow_all.id
   ]
 }
 
-resource "aws_launch_template" "launch_template" {
-  name                   = "launch_template"
-  update_default_version = true
-  user_data              = base64encode(data.template_file.efs_template_file.rendered)
-}
-
-data "template_file" "efs_template_file" {
-  template = file("${path.module}/launch_template_user_data.tpl")
-  count    = length(keys(var.mount_points))
-  vars = {
-    efs_id        = aws_efs_file_system.efs[count.index].id
-    efs_directory = "/mnt/efs"
-  }
-}
+# resource "aws_launch_template" "launch_template" {
+#   name                   = "launch_template"
+#   update_default_version = true
+#   user_data              = base64encode(data.template_file.efs_template_file[count.index].rendered)
+# }
+#
+# data "template_file" "efs_template_file" {
+#
+#   for_each = { for k, v in var.mount_points : k => v }
+#   template = file("${path.module}/launch_template_user_data.tpl")
+#   vars = {
+#     efs_id        = aws_efs_file_system.efs.*.id
+#     efs_directory = lookup(each.value, "directory", "/mnt/efs")
+#
+#   }
+# }

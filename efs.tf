@@ -2,44 +2,38 @@
 
 # EFS for sharing stuff
 
-resource "aws_efs_file_system" "efs" {
+resource "aws_efs_file_system" "efs_fs" {
 
-  for_each = { for k, v in var.mount_points : k => v }
-
-  creation_token   = each.key
-  performance_mode = lookup(each.value, "performance_mode", null)
-  encrypted        = lookup(each.value, "encrypted", "false")
-
-}
-
-// Get random subnet
-resource "random_shuffle" "random_subnet" {
-  input = tolist(var.batch_subnets)
+  count          = var.efs_name != "" ? 1 : 0
+  creation_token = format("%s-%s", "efs", random_string.rand.result)
+  # performance_mode = null
+  # encrypted        = false
 }
 
 // We assign only one subnet_id
 resource "aws_efs_mount_target" "efs_mount_target" {
-  count          = length(tolist(keys(var.mount_points)))
-  file_system_id = aws_efs_file_system.efs[count.index].id
-  subnet_id      = element(random_shuffle.random_subnet.result, 0)
+  count          = length(tolist(var.batch_subnets))
+  file_system_id = aws_efs_file_system.efs_fs[0].id
+  subnet_id      = tolist(var.batch_subnets)[count.index]
   security_groups = [
     aws_security_group.allow_all.id
   ]
+  depends_on = [aws_efs_file_system.efs_fs]
 }
 
-# resource "aws_launch_template" "launch_template" {
-#   name                   = "launch_template"
-#   update_default_version = true
-#   user_data              = base64encode(data.template_file.efs_template_file[count.index].rendered)
-# }
-#
-# data "template_file" "efs_template_file" {
-#
-#   for_each = { for k, v in var.mount_points : k => v }
-#   template = file("${path.module}/launch_template_user_data.tpl")
-#   vars = {
-#     efs_id        = aws_efs_file_system.efs.*.id
-#     efs_directory = lookup(each.value, "directory", "/mnt/efs")
-#
-#   }
-# }
+resource "aws_launch_template" "efs_launch_template" {
+  name                   = "efs_launch_template"
+  update_default_version = true
+  user_data              = base64encode(data.template_file.efs_template_file.rendered)
+  depends_on             = [aws_efs_file_system.efs_fs]
+}
+
+data "template_file" "efs_template_file" {
+
+  template = file("${path.module}/launch_template_user_data.tpl")
+  vars = {
+    efs_id        = aws_efs_file_system.efs_fs[0].id
+    efs_directory = var.efs_path
+
+  }
+}

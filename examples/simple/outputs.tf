@@ -10,7 +10,11 @@ output "bucket_name" {
   value = module.aws-computation.bucket_name
 }
 
-
 output "rand_string" {
   value = module.aws-computation.rand_string
 }
+
+output "efs_id" {
+  value = module.aws-computation.efs_id
+}
+

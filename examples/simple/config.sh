@@ -24,5 +24,7 @@ export TF_VAR_batch_min_vcpus_spot=0
 export TF_VAR_batch_desired_vcpus_spot=0
 export TF_VAR_batch_instance_type_spot='["optimal"]'
 
+export TF_VAR_efs_name=efs
+export TF_VAR_efs_path=/mnt/efs
 
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity|jq .Account|tr -d \")

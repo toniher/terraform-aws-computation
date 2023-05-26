@@ -19,6 +19,10 @@ resource "aws_instance" "ec2-entrypoint" {
     volume_type = var.ec2_volume_type
   }
 
+  launch_template {
+    id = var.efs_name == "" ? null : aws_launch_template.efs_launch_template.id
+  }
+
   // We add additional sleep time for allowing creation and proper set up of image
   provisioner "local-exec" {
     command = "sleep 5"
@@ -44,7 +48,17 @@ resource "aws_s3_bucket" "ec2-bucket" {
 }
 
 resource "aws_s3_bucket_acl" "ec2-bucket-acl" {
+  count      = var.ec2_count
+  bucket     = aws_s3_bucket.ec2-bucket[count.index].id
+  acl        = "private"
+  depends_on = [aws_s3_bucket_ownership_controls.ec2-bucket-acl-ownership]
+}
+
+resource "aws_s3_bucket_ownership_controls" "ec2-bucket-acl-ownership" {
   count  = var.ec2_count
   bucket = aws_s3_bucket.ec2-bucket[count.index].id
-  acl    = "private"
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }
+

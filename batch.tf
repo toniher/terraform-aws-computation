@@ -22,6 +22,10 @@ resource "aws_batch_compute_environment" "compute" {
 
     instance_type = each.value.instance_type
 
+    launch_template {
+      launch_template_id = var.efs_name == "" ? null : aws_launch_template.efs_launch_template.id
+    }
+
     spot_iam_fleet_role = (each.value.type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)
 
     bid_percentage = (each.value.type == "SPOT" ? each.value.bid_percentage : null)
@@ -44,9 +48,7 @@ resource "aws_batch_job_queue" "queue" {
 
   for_each = { for k, v in var.job_queues : k => v }
 
-
-
-  name     = lookup(each.value, "name", null)
+  name     = lookup(each.value, "name", each.key)
   state    = "ENABLED"
   priority = each.value.priority
   compute_environments = [
@@ -57,6 +59,6 @@ resource "aws_batch_job_queue" "queue" {
   depends_on = [aws_batch_compute_environment.compute]
 
   tags = {
-    name = format("queue-%s-%s", lookup(each.value, "name", null), random_string.rand.result)
+    name = format("queue-%s-%s", lookup(each.value, "name", each.key), random_string.rand.result)
   }
 }

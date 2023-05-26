@@ -53,11 +53,21 @@ variable "bucket_prefix" {
   default = "class-bucket"
 }
 
-
 variable "repo_url" {
   type    = string
   default = ""
 }
+
+variable "efs_name" {
+  type    = string
+  default = ""
+}
+
+variable "efs_path" {
+  type    = string
+  default = "/mnt/efs"
+}
+
 
 // Batch variables
 
@@ -76,12 +86,6 @@ variable "compute_environments" {
 
 variable "job_queues" {
   description = "Map of job queue and scheduling policy defintions to create"
-  type        = any
-  default     = {}
-}
-
-variable "mount_points" {
-  description = "Map of different mount points for EFS"
   type        = any
   default     = {}
 }

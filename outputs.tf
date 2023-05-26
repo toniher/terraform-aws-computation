@@ -13,3 +13,7 @@ output "bucket_name" {
 output "rand_string" {
   value = random_string.rand.result
 }
+
+output "efs_id" {
+  value = aws_efs_file_system.efs_fs[0].id
+}

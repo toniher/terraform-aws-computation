@@ -95,7 +95,13 @@ variable "batch_compute_environment_type_spot" {
   type = string
 }
 
+variable "efs_name" {
+  type = string
+}
 
+variable "efs_path" {
+  type = string
+}
 
 
 provider "aws" {
@@ -106,7 +112,6 @@ provider "aws" {
 }
 
 provider "random" {}
-
 
 module "aws-computation" {
   // source = "git::https://github.com/toniher/terraform-aws-computation"
@@ -123,6 +128,8 @@ module "aws-computation" {
   bucket_acl        = var.bucket_acl
   bucket_prefix     = var.bucket_prefix
   repo_url          = var.repo_url
+  efs_name          = var.efs_name
+  efs_path          = var.efs_path
 
   compute_environments = {
 
@@ -152,6 +159,5 @@ module "aws-computation" {
 
 
   }
-
 
 }

@@ -13,6 +13,14 @@ sudo echo "ec2-user:${ec2_password}"|chpasswd
 
 sudo systemctl restart sshd
 
+# EFS
+if [ ! -z "${efs_directory}" ]
+then
+  sudo yum install -y amazon-efs-utils
+  sudo mkdir -p ${efs_directory}
+  echo "${efs_id}:/ ${efs_directory} efs _netdev,tls,iam 0 0" | sudo tee -a /etc/fstab
+  sudo mount -a -t efs defaults
+fi
 
 # Git of the course
 

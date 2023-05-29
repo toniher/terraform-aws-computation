@@ -31,6 +31,8 @@ module "aws-computation" {
   bucket_acl        = var.bucket_acl
   bucket_prefix     = var.bucket_prefix
   repo_url          = var.repo_url
+  efs_name          = var.efs_name
+  efs_path          = var.efs_path
 
   compute_environments = {
     spot = {
@@ -53,12 +55,6 @@ module "aws-computation" {
     }
   }
 
-  mount_points = {
-    default = {
-      directory = "/mnt/efs"
-    }
-  }
-
 }
 ```
 
@@ -73,7 +69,8 @@ module "aws-computation" {
 	* Attach policy to the same role
 	* Put recipe in ec2init.tpl.sh for mounting them
 	* Consider specific permissions if private ones: https://aws.amazon.com/premiumsupport/knowledge-center/s3-instance-access-bucket/
-* Add launch template for Batch node
+* Allow multiple EFS mounts https://stackoverflow.com/questions/57378648/needing-multiple-counts-on-a-terraform-resource
+* Allow 0 EFS mounts
 
 ## References
 

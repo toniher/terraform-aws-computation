@@ -24,6 +24,7 @@ resource "aws_batch_compute_environment" "compute" {
 
     launch_template {
       launch_template_id = var.efs_name == "" ? null : aws_launch_template.efs_launch_template.id
+      version            = aws_launch_template.efs_launch_template.latest_version
     }
 
     spot_iam_fleet_role = (each.value.type == "SPOT" ? aws_iam_role.ClusterFleetRole.arn : null)

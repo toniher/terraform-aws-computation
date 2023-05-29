@@ -24,16 +24,30 @@ resource "aws_efs_mount_target" "efs_mount_target" {
 resource "aws_launch_template" "efs_launch_template" {
   name                   = "efs_launch_template"
   update_default_version = true
-  user_data              = base64encode(data.template_file.efs_template_file.rendered)
+  user_data              = data.template_cloudinit_config.userdata_config.rendered
   depends_on             = [aws_efs_file_system.efs_fs]
 }
 
-data "template_file" "efs_template_file" {
+data "template_cloudinit_config" "userdata_config" {
+  gzip          = false
+  base64_encode = true
 
-  template = file("${path.module}/launch_template_user_data.tpl")
+  part {
+    content_type = "text/cloud-boothook"
+    content      = file("${path.module}/cloud_boothook.cfg")
+  }
+  # Main cloud-config configuration file.
+  part {
+    content_type = "text/cloud-config"
+    content      = data.template_file.efs_cloud_init_template_file.rendered
+  }
+}
+
+data "template_file" "efs_cloud_init_template_file" {
+
+  template = file("${path.module}/cloud_init.tpl")
   vars = {
     efs_id        = aws_efs_file_system.efs_fs[0].id
     efs_directory = var.efs_path
-
   }
 }

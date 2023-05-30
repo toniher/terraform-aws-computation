@@ -32,10 +32,10 @@ data "template_cloudinit_config" "userdata_config" {
   gzip          = false
   base64_encode = true
 
-  part {
-    content_type = "text/cloud-boothook"
-    content      = file("${path.module}/cloud_boothook.cfg")
-  }
+  # part {
+  #   content_type = "text/cloud-boothook"
+  #   content      = file("${path.module}/cloud_boothook.cfg")
+  # }
   # Main cloud-config configuration file.
   part {
     content_type = "text/cloud-config"

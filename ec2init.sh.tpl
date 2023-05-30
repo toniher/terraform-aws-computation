@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Let's update first
-sudo yum update -y
+# Let's update first - Skip broken because problem with Apptainer (sic)
+sudo yum update -y --skip-broken
 
 sudo mkdir -p /mnt/${bucket_prefix}-${rand}-${count}
 

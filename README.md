@@ -60,7 +60,6 @@ module "aws-computation" {
 
 ## TODO
 
-* ```yum update -y``` seems not to be happening
 * Fuse Mounting of S3 not always working
 * error deleting Batch Compute Environment: Cannot delete, found existing JobQueue relationship.
 * Change S3 permissions to only the ones defined
